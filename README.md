@@ -1,3 +1,4 @@
+[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/VzwJPzPo)
 # ECE 208 Homework 8: Estimating GTR Parameters
 In this homework assignment, we will continue studying models of DNA evolution, namely the [General Time Reversible (GTR) model](https://en.wikipedia.org/wiki/Models_of_DNA_evolution#GTR_model_(Tavar%C3%A9_1986)).<sup>1</sup> In the previous assignment, we tried to compute the (log-)likelihood of observing DNA sequences *S* given the GTR model parameters and given a tree *T* with known branch lengths and topology. Now, we will try to infer the maximum-likelihood GTR model parameters given DNA sequences *S* and tree *T*.
 
