@@ -19,38 +19,34 @@ def gtr_params(tree, seqs):
     # TODO Your code here
     gtr_rates = {'CT':0,'AT':0, 'GT':0, 'AC':0, 'CG':0, 'AG':0}
     gtr_probs = {'A':0, 'C':0, 'G':0, 'T':0}
-    count = 0
     for node1 in tree.traverse_postorder():
         if node1.is_leaf():
             for node2 in tree.traverse_postorder():
                 if node2.is_leaf() and node1 != node2:
                     d = tree.distance_between(node1,node2)
                     temp_probs,temp_rates = gtr_params_pair(seqs[node1.get_label()],seqs[node2.get_label()],d)
-                    for key, value in temp_rates.items():
-
-
-                        # weight longer branches more than shorter branches to discourage outliers
-                        # will normalize later
-                        gtr_rates[key] += d*value
+                    weight = 1/(np.var(list(temp_probs.values())) + .00001)
+                   
                     for key, value in temp_probs.items():
                         gtr_probs[key] += value
+                   
+                    for key, value in temp_rates.items():
+                        gtr_rates[key] += weight*value
 
-    #import pdb; pdb.set_trace()
+
     # normalize
     norm = gtr_rates['GT']
     for key, value in gtr_rates.items():
         gtr_rates[key] = value/norm
 
     #normalize
-    import pdb; pdb.set_trace()
     probsum = sum(list(gtr_probs.values()))
     for key, value in gtr_probs.items():
-        gtr_probs[key] = value/probsum
+        gtr_probs [key] = value/probsum
 
 
 
     
-    import pdb; pdb.set_trace()
     #gtr_params_pair(r,s,d)
     return gtr_probs,gtr_rates
 
