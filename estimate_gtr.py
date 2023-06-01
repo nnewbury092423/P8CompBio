@@ -3,6 +3,9 @@ ERROR_PROB = "Stationary probabilities must be between 0 and 1"
 ERROR_SEQS = "Invalid sequence file"
 PROB_KEYS = ['A', 'C', 'G', 'T']
 RATE_KEYS = ['CT', 'AT', 'GT', 'AC', 'CG', 'AG']
+import numpy as np
+import scipy as sp
+from estimate_gtr_pair import gtr_params_pair
 
 def gtr_params(tree, seqs):
     '''
@@ -14,6 +17,41 @@ def gtr_params(tree, seqs):
     gtr_probs = dict() # keys: {'A', 'C', 'G', 'T'}   values: the corresponding GTR stationary probabilities
     gtr_rates = dict() # keys: {'AC', 'AG', 'AT', 'CG', 'CT', 'GT'}   values: the corresponding GTR transition rates
     # TODO Your code here
+    gtr_rates = {'CT':0,'AT':0, 'GT':0, 'AC':0, 'CG':0, 'AG':0}
+    gtr_probs = {'A':0, 'C':0, 'G':0, 'T':0}
+    count = 0
+    for node1 in tree.traverse_postorder():
+        if node1.is_leaf():
+            for node2 in tree.traverse_postorder():
+                if node2.is_leaf() and node1 != node2:
+                    d = tree.distance_between(node1,node2)
+                    temp_probs,temp_rates = gtr_params_pair(seqs[node1.get_label()],seqs[node2.get_label()],d)
+                    for key, value in temp_rates.items():
+
+
+                        # weight longer branches more than shorter branches to discourage outliers
+                        # will normalize later
+                        gtr_rates[key] += d*value
+                    for key, value in temp_probs.items():
+                        gtr_probs[key] += value
+
+    #import pdb; pdb.set_trace()
+    # normalize
+    norm = gtr_rates['GT']
+    for key, value in gtr_rates.items():
+        gtr_rates[key] = value/norm
+
+    #normalize
+    import pdb; pdb.set_trace()
+    probsum = sum(list(gtr_probs.values()))
+    for key, value in gtr_probs.items():
+        gtr_probs[key] = value/probsum
+
+
+
+    
+    import pdb; pdb.set_trace()
+    #gtr_params_pair(r,s,d)
     return gtr_probs,gtr_rates
 
 def read_FASTA(filename):

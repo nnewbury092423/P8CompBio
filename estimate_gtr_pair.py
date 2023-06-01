@@ -3,7 +3,10 @@ ERROR_PROB = "Stationary probabilities must be between 0 and 1"
 ERROR_SEQS = "Invalid sequence file"
 ERROR_TWO_SEQS = "Sequence file must have exactly 2 sequences"
 PROB_KEYS = ['A', 'C', 'G', 'T']
+# modified these keys so in same order
 RATE_KEYS = ['CT', 'AT', 'GT', 'AC', 'CG', 'AG']
+import scipy as sp
+import numpy as np
 
 def gtr_params_pair(r, s, d):
     '''
@@ -16,6 +19,86 @@ def gtr_params_pair(r, s, d):
     gtr_probs = dict() # keys: {'A', 'C', 'G', 'T'}   values: the corresponding GTR stationary probabilities
     gtr_rates = dict() # keys: {'AC', 'AG', 'AT', 'CG', 'CT', 'GT'}   values: the corresponding GTR transition rates
     # TODO Your code here
+    Orderedratekeys = ['AC', 'AG', 'AT', 'CG', 'CT', 'GT']
+    # Find R matrix
+    # Also count pis
+    P = np.zeros((4,4))
+    pis = np.zeros(4)
+    for i in range(len(s)):
+        if(r[i] == s[i]):
+            P[PROB_KEYS.index(r[i])][PROB_KEYS.index(r[i])] += 2
+            pis[PROB_KEYS.index(r[i])] += 2
+        else:
+            try:
+                ind = Orderedratekeys.index(r[i] + s[i])
+            except:
+                ind = Orderedratekeys.index(s[i] + r[i])
+            #AC and CA
+            if ind == 0:
+                P[1][0] +=1
+                P[0][1] +=1
+                pis[0] += 1
+                pis[1] += 1
+            #AG and GA
+            elif ind == 1:
+                P[2][0] +=1
+                P[0][2] +=1
+                pis[0] += 1
+                pis[2] += 1
+            #AT and TA
+            elif ind == 2:
+                P[3][0] +=1
+                P[0][3] +=1
+                pis[0] += 1
+                pis[3] += 1
+            #CG and GC
+            elif ind == 3:
+                P[1][2] +=1
+                P[2][1] +=1
+                pis[1] += 1
+                pis[2] += 1
+            #CT and TC
+            elif ind == 4:
+                P[1][3] +=1
+                P[3][1] +=1
+                pis[1] += 1
+                pis[3] += 1
+            # GT and TG
+            elif ind == 5:
+                P[2][3] +=1
+                P[3][2] +=1
+                pis[2] += 1
+                pis[3] += 1
+    row_sum = P.sum(axis=1)
+    P = P/row_sum[:,np.newaxis]
+    R = sp.linalg.logm(P)/d + np.exp(-15)
+    pis = pis/pis.sum()
+    # Find rate changes and normalize
+
+    # keys: {'A', 'C', 'G', 'T'} 
+    #RATE_KEYS = ['CT', 'AT', 'GT', 'AC', 'CG', 'AG']
+
+
+
+
+    gtr_rates['CT'] = R[3][1]/pis[1]
+    gtr_rates['AT'] = R[3][0]/pis[0]
+    gtr_rates['GT'] = R[3][2]/pis[2]
+    gtr_rates['AC'] = R[1][0]/pis[0]
+    gtr_rates['CG'] = R[2][1]/pis[1]
+    gtr_rates['AG'] = R[2][0]/pis[0]
+    norm = gtr_rates['AG']
+    for key, value in gtr_rates.items():
+        gtr_rates[key] = value/norm
+
+
+
+    for i in range(4):
+        gtr_probs[PROB_KEYS[i]] = pis[i]
+
+
+    #import pdb; pdb.set_trace()
+
     return gtr_probs,gtr_rates
 
 def read_FASTA(filename):
