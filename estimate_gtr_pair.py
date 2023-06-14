@@ -81,8 +81,7 @@ def gtr_params_pair(r, s, d):
     row_sum = P.sum(axis=1)
     P = P/row_sum[:,np.newaxis]
     pis = pis/pis.sum()
-
-
+    R = sp.linalg.logm(P)/d + np.exp(-15)
 
     # Fill out dictionary
     # keys: {'A', 'C', 'G', 'T'} 
@@ -93,6 +92,7 @@ def gtr_params_pair(r, s, d):
     gtr_rates['AC'] = R[1][0]/pis[0]
     gtr_rates['CG'] = R[2][1]/pis[1]
     gtr_rates['AG'] = R[2][0]/pis[0]
+    
     norm = gtr_rates['AG']
 
     # normalize rates

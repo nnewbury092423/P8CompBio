@@ -17,16 +17,24 @@ def gtr_params(tree, seqs):
     gtr_probs = dict() # keys: {'A', 'C', 'G', 'T'}   values: the corresponding GTR stationary probabilities
     gtr_rates = dict() # keys: {'AC', 'AG', 'AT', 'CG', 'CT', 'GT'}   values: the corresponding GTR transition rates
     # TODO Your code here
+    # create empty dictionary
     gtr_rates = {'CT':0,'AT':0, 'GT':0, 'AC':0, 'CG':0, 'AG':0}
     gtr_probs = {'A':0, 'C':0, 'G':0, 'T':0}
+
+    # traverse through each pair of leaves
     for node1 in tree.traverse_postorder():
         if node1.is_leaf():
             for node2 in tree.traverse_postorder():
                 if node2.is_leaf() and node1 != node2:
+
+                    # find parameters for pair
                     d = tree.distance_between(node1,node2)
                     temp_probs,temp_rates = gtr_params_pair(seqs[node1.get_label()],seqs[node2.get_label()],d)
+
+                    # find weight
                     weight = 1/(np.var(list(temp_probs.values())) + .00001)
                    
+                   # take weighted sum
                     for key, value in temp_probs.items():
                         gtr_probs[key] += value
                    
