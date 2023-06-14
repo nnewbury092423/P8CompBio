@@ -1,0 +1,25 @@
+Test type: pair. Sequence length: short. Test ID: 1. Grade: 0.0/4.0
+Test type: multi. Sequence length: short. Test ID: 1. Grade: 0.0/4.0
+Test type: pair. Sequence length: short. Test ID: 2. Grade: 0.0/4.0
+Test type: multi. Sequence length: short. Test ID: 2. Grade: 0.0/4.0
+Test type: pair. Sequence length: short. Test ID: 3. Grade: 0.0/4.0
+Test type: multi. Sequence length: short. Test ID: 3. Grade: 0.0/4.0
+Test type: pair. Sequence length: short. Test ID: 4. Grade: 0.0/4.0
+Test type: multi. Sequence length: short. Test ID: 4. Grade: 0.0/4.0
+Test type: pair. Sequence length: short. Test ID: 5. Grade: 0.0/4.0
+Test type: multi. Sequence length: short. Test ID: 5. Grade: 0.0/4.0
+Test type: pair. Sequence length: long. Test ID: 1. Grade: 0.0/4.0
+Test type: multi. Sequence length: long. Test ID: 1. Grade: 0.0/4.0
+Test type: pair. Sequence length: long. Test ID: 2. Grade: 0.0/4.0
+Test type: multi. Sequence length: long. Test ID: 2. Grade: 0.0/4.0
+Test type: pair. Sequence length: long. Test ID: 3. Grade: 0.0/4.0
+Test type: multi. Sequence length: long. Test ID: 3. Grade: 0.0/4.0
+Test type: pair. Sequence length: long. Test ID: 4. Grade: 0.0/4.0
+Test type: multi. Sequence length: long. Test ID: 4. Grade: 0.0/4.0
+Test type: pair. Sequence length: long. Test ID: 5. Grade: 0.0/4.0
+Test type: multi. Sequence length: long. Test ID: 5. Grade: 0.0/4.0
+Programming Grade: 0.0
+Equations for Estimating from a Pair of Sequences: 10/10
+Algorithm for Estimating from Multiple Sequences: 10/10
+writeup TOTAL: 20/20
+TOTAL: 20.0/100
